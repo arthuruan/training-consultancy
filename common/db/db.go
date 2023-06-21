@@ -1,4 +1,4 @@
-package configs
+package db
 
 import (
 	"context"
@@ -6,12 +6,13 @@ import (
 	"log"
 	"time"
 
+	"github.com/arthuruan/training-consultancy/common/configs"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func ConnectDB() *mongo.Client {
-	uri := EnvMongoURI()
+	uri := configs.EnvMongoURI()
 
 	client, err := mongo.NewClient(options.Client().ApplyURI(uri))
 	if err != nil {
@@ -34,9 +35,6 @@ func ConnectDB() *mongo.Client {
 
 	return client
 }
-
-// Client instance
-var DB *mongo.Client = ConnectDB()
 
 // Getting Database Collections
 func GetCollection(client *mongo.Client, collecitonName string) *mongo.Collection {
