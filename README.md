@@ -1,2 +1,2 @@
 # traning-consultancy-api
-Training Consultancy API, that helps a personal trainer to create and manage your students consultancy 
+Traning Consultancy API, that helps a personal trainer to create and manage your students consultancy 
