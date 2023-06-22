@@ -1,8 +1,7 @@
-package users
+package auth
 
 import (
 	"github.com/arthuruan/training-consultancy/common/db"
-	"github.com/arthuruan/training-consultancy/common/middleware"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -18,7 +17,7 @@ func RegisterRoutes(router *gin.Engine, client *mongo.Client) {
 		userCollection,
 	}
 
-	routes := router.Group("/users")
-	routes.GET("/", middleware.RequireAuth, h.GetUsers)
-	routes.GET("/:id", middleware.RequireAuth, h.GetUser)
+	routes := router.Group("/auth")
+	routes.POST("/signup", h.Signup)
+	routes.POST("/login", h.Login)
 }

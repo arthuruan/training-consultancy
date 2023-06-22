@@ -14,13 +14,18 @@ func (h handler) GetUsers(ctx *gin.Context) {
 	cursor, err := h.userCollection.Find(ctx, bson.D{})
 
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, err)
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"errorMessage": err.Error(),
+		})
 		return
 	}
 
 	defer cursor.Close(ctx)
 	if err := cursor.All(ctx, &users); err != nil {
-		ctx.AbortWithError(http.StatusBadRequest, err)
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"errorMessage": err.Error(),
+		})
+		return
 	}
 
 	ctx.JSON(http.StatusOK, users)
