@@ -1,11 +1,11 @@
-package user
+package users
 
 import (
 	"net/http"
 
 	"github.com/arthuruan/training-consultancy/common/models"
+	"github.com/arthuruan/training-consultancy/common/validations"
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -16,12 +16,6 @@ type UserBody struct {
 	Name     string `json:"name" validate:"required"`
 }
 
-type ErrorResponse struct {
-	ErrorMessage string `json:"errorMessage"`
-}
-
-var validate = validator.New()
-
 func (h handler) AddUser(ctx *gin.Context) {
 	body := UserBody{}
 
@@ -30,11 +24,8 @@ func (h handler) AddUser(ctx *gin.Context) {
 		return
 	}
 
-	// use the validator library to validate required fields
-	if validationErr := validate.Struct(&body); validationErr != nil {
-		ctx.JSON(http.StatusBadRequest, ErrorResponse{
-			ErrorMessage: validationErr.Error(),
-		})
+	if validationErrors := validations.Struct(&body); validationErrors != nil {
+		ctx.JSON(http.StatusBadRequest, validationErrors)
 		return
 	}
 

@@ -1,4 +1,4 @@
-package user
+package users
 
 import (
 	"github.com/arthuruan/training-consultancy/common/db"
@@ -19,4 +19,5 @@ func RegisterRoutes(router *gin.Engine, client *mongo.Client) {
 
 	routes := router.Group("/users")
 	routes.POST("/", h.AddUser)
+	routes.GET("/", h.GetUsers)
 }
