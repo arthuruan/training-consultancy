@@ -41,7 +41,7 @@ func (h handler) Login(ctx *gin.Context) {
 
 	// Look ip requested user
 	var user models.User
-	if err := h.userCollection.FindOne(ctx, bson.M{"email": body.Email}).Decode(&user); err != nil {
+	if err := h.usersCollection.FindOne(ctx, bson.M{"email": body.Email}).Decode(&user); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"errorMessage": "Ivalid email or password",
 		})

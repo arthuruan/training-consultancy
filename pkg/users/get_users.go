@@ -11,7 +11,7 @@ import (
 func (h handler) GetUsers(ctx *gin.Context) {
 	var users []models.User
 
-	cursor, err := h.userCollection.Find(ctx, bson.D{})
+	cursor, err := h.usersCollection.Find(ctx, bson.D{})
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{

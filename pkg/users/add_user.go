@@ -18,7 +18,6 @@ import (
 type UserBody struct {
 	Email    string `json:"email" validate:"required"`
 	Password string `json:"password" validate:"required"`
-	Type     string `json:"type" validate:"required"`
 	Name     string `json:"name" validate:"required"`
 }
 
@@ -42,7 +41,7 @@ func (h handler) AddUser(ctx *gin.Context) {
 	}
 
 	// Create a unique index on the email field
-	if _, err := h.userCollection.Indexes().CreateOne(
+	if _, err := h.usersCollection.Indexes().CreateOne(
 		ctx,
 		mongo.IndexModel{
 			Keys:    bson.D{{Key: "email", Value: 1}},
@@ -70,15 +69,20 @@ func (h handler) AddUser(ctx *gin.Context) {
 		Name:      body.Name,
 		Email:     body.Email,
 		Password:  string(hash),
-		Type:      body.Type,
+		Type:      models.UserType.Professor,
 		CreatedAt: time.Now(),
 	}
-	if _, err := h.userCollection.InsertOne(ctx, user); err != nil {
+	if _, err := h.usersCollection.InsertOne(ctx, user); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"errorMessage": err.Error(),
 		})
 		return
 	}
 
-	ctx.JSON(http.StatusCreated, user)
+	ctx.JSON(http.StatusCreated, gin.H{
+		"id":        user.ID,
+		"name":      user.Name,
+		"type":      user.Type,
+		"createdAt": user.CreatedAt,
+	})
 }
