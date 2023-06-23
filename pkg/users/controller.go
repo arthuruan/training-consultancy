@@ -18,7 +18,10 @@ func RegisterRoutes(router *gin.Engine, client *mongo.Client) {
 		userCollection,
 	}
 
-	routes := router.Group("/users")
-	routes.GET("/", middleware.RequireAuth, h.GetUsers)
-	routes.GET("/:id", middleware.RequireAuth, h.GetUser)
+	v1 := router.Group("/v1")
+	users := v1.Group("/users")
+	users.POST("/", h.AddUser)
+	users.POST("/login", h.Login)
+	users.GET("/", middleware.RequireAuth, h.GetUsers)
+	users.GET("/:id", middleware.RequireAuth, h.GetUser)
 }

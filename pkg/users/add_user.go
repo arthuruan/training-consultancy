@@ -1,4 +1,4 @@
-package auth
+package users
 
 import (
 	"net/http"
@@ -22,7 +22,7 @@ type UserBody struct {
 	Name     string `json:"name" validate:"required"`
 }
 
-func (h handler) Signup(ctx *gin.Context) {
+func (h handler) AddUser(ctx *gin.Context) {
 	body := UserBody{}
 
 	if err := ctx.BindJSON(&body); err != nil {

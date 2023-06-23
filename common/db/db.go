@@ -4,15 +4,15 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 	"time"
 
-	"github.com/arthuruan/training-consultancy/common/configs"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func ConnectDB() *mongo.Client {
-	uri := configs.EnvMongoURI()
+	uri := os.Getenv("DB_URI")
 
 	client, err := mongo.NewClient(options.Client().ApplyURI(uri))
 	if err != nil {
