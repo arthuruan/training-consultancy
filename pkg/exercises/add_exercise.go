@@ -2,6 +2,7 @@ package exercises
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/arthuruan/training-consultancy/common/models"
 	"github.com/gin-gonic/gin"
@@ -36,10 +37,12 @@ func (h handler) AddExercie(ctx *gin.Context) {
 
 	// Insert in the database
 	exercise := models.Exercise{
-		ID:       primitive.NewObjectID(),
-		Name:     body.Name,
-		Category: body.Category,
-		VideoURL: body.VideoURL,
+		ID:        primitive.NewObjectID(),
+		Name:      body.Name,
+		Category:  body.Category,
+		VideoURL:  body.VideoURL,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	}
 	if _, err := h.exercisesCollection.InsertOne(ctx, exercise); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
