@@ -70,6 +70,7 @@ func (h handler) AddUser(ctx *gin.Context) {
 		Password:  string(hash),
 		Type:      models.UserType.Professor,
 		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	}
 	if _, err := h.usersCollection.InsertOne(ctx, user); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
@@ -81,7 +82,9 @@ func (h handler) AddUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, gin.H{
 		"id":        user.ID,
 		"name":      user.Name,
+		"email":     user.Email,
 		"type":      user.Type,
 		"createdAt": user.CreatedAt,
+		"updatedAt": user.UpdatedAt,
 	})
 }

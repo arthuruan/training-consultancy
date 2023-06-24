@@ -2,6 +2,7 @@ package users
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/arthuruan/training-consultancy/common/models"
 	"github.com/gin-gonic/gin"
@@ -11,7 +12,7 @@ import (
 )
 
 type UpdateUserBody struct {
-	Name string `json:"name"`
+	Name string `json:"name" validate:"required"`
 }
 
 func (h handler) UpdateUser(ctx *gin.Context) {
@@ -37,7 +38,7 @@ func (h handler) UpdateUser(ctx *gin.Context) {
 	}
 
 	// Update user
-	update := bson.M{"name": body.Name}
+	update := bson.M{"name": body.Name, "updatedAt": time.Now()}
 	result, err := h.usersCollection.UpdateOne(ctx, bson.M{"_id": objId}, bson.M{"$set": update})
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{

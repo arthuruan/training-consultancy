@@ -15,6 +15,7 @@ func (h handler) GetUser(ctx *gin.Context) {
 
 	var user models.User
 
+	// TODO: not get password collumn
 	if err := h.usersCollection.FindOne(ctx, bson.M{"_id": objId}).Decode(&user); err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{
 			"errorMessage": "User not found.",

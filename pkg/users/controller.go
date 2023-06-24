@@ -25,5 +25,5 @@ func RegisterRoutes(router *gin.Engine, client *mongo.Client) {
 	users.POST("/login", h.Login)
 	users.GET("/", middleware.RequireAuth, h.GetUsers)
 	users.GET("/:id", middleware.RequireAuth, h.GetUser)
-	users.PATCH("/:id", middleware.RequireAuth, h.UpdateUser)
+	users.PUT("/:id", middleware.RequireAuth, h.UpdateUser)
 }

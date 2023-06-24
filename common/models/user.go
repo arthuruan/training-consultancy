@@ -21,4 +21,5 @@ type User struct {
 	Type      string             `bson:"type,omitempty" json:"type"`
 	Name      string             `bson:"name,omitempty" json:"name"`
 	CreatedAt time.Time          `bson:"createdAt,omitempty" json:"createdAt"`
+	UpdatedAt time.Time          `bson:"updatedAt,omitempty" json:"updatedAt"`
 }

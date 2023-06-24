@@ -20,6 +20,7 @@ func (h handler) GetUsers(ctx *gin.Context) {
 		return
 	}
 
+	// TODO: not get password collumn
 	defer cursor.Close(ctx)
 	if err := cursor.All(ctx, &users); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
