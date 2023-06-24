@@ -18,5 +18,6 @@ type Student struct {
 	PlanType      string             `bson:"planType" json:"planType"`
 	Frequence     string             `bson:"frequence" json:"frequence"`
 	TrainingPlace string             `bson:"trainingPlace" json:"trainingPlace"`
-	CreatedAt     time.Time          `bson:"createdAt,omitempty" json:"createdAt"`
+	CreatedAt     time.Time          `bson:"createdAt" json:"createdAt"`
+	UpdatedAt     time.Time          `bson:"updatedAt" json:"updateAt"`
 }

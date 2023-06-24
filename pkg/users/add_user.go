@@ -56,7 +56,6 @@ func (h handler) AddUser(ctx *gin.Context) {
 
 	// Hash the password
 	hash, err := bcrypt.GenerateFromPassword([]byte(body.Password), 10)
-
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"errorMessage": "Failed to hash password",
