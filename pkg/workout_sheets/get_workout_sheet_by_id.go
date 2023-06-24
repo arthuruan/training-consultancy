@@ -1,4 +1,4 @@
-package exercises
+package workoutsheets
 
 import (
 	"net/http"
@@ -9,18 +9,18 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func (h handler) GetExerciseById(ctx *gin.Context) {
+func (h handler) GetWorkoutSheetById(ctx *gin.Context) {
 	id := ctx.Param("id")
 	objId, _ := primitive.ObjectIDFromHex(id)
 
-	var exercise models.Exercise
+	var workoutSheet models.WorkoutSheet
 
-	if err := h.exercisesCollection.FindOne(ctx, bson.M{"_id": objId}).Decode(&exercise); err != nil {
+	if err := h.workoutSheetsCollection.FindOne(ctx, bson.M{"_id": objId}).Decode(&workoutSheet); err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{
-			"errorMessage": "Exercise not found.",
+			"errorMessage": "Workout sheet not found.",
 		})
 		return
 	}
 
-	ctx.JSON(http.StatusOK, exercise)
+	ctx.JSON(http.StatusOK, workoutSheet)
 }
