@@ -70,7 +70,6 @@ func (h handler) AddStudent(ctx *gin.Context) {
 	}
 
 	birthDate, err := time.Parse(time.RFC3339, body.BirthDate)
-
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"errorMessage": "Invalid birthDate format, you should use ISO 8601 format.",
