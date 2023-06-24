@@ -10,14 +10,14 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-type ExerciseBody struct {
+type CreateExerciseBody struct {
 	Name     string `json:"name" validate:"required"`
 	Category string `json:"category" validate:"required"`
 	VideoURL string `json:"videoUrl" validate:"required"`
 }
 
 func (h handler) AddExercie(ctx *gin.Context) {
-	body := ExerciseBody{}
+	body := CreateExerciseBody{}
 
 	if err := ctx.BindJSON(&body); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{

@@ -13,7 +13,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-type StudentBody struct {
+type CreateStudentBody struct {
 	ProfessorID   string `json:"professorId" validate:"required"`
 	PlanType      string `json:"planType" validate:"required"`
 	Name          string `json:"name" validate:"required"`
@@ -27,7 +27,7 @@ type StudentBody struct {
 }
 
 func (h handler) AddStudent(ctx *gin.Context) {
-	body := StudentBody{}
+	body := CreateStudentBody{}
 
 	if err := ctx.BindJSON(&body); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{

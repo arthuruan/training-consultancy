@@ -9,13 +9,16 @@ import (
 
 type handler struct {
 	workoutSheetsCollection *mongo.Collection
+	studentsCollection      *mongo.Collection
 }
 
 func RegisterRoutes(router *gin.Engine, client *mongo.Client) {
 	workoutSheetsCollection := db.GetCollection(client, "workout_sheets")
+	studentsCollection := db.GetCollection(client, "students")
 
 	h := &handler{
 		workoutSheetsCollection,
+		studentsCollection,
 	}
 
 	v1 := router.Group("/v1")

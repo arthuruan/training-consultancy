@@ -15,14 +15,14 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-type UserBody struct {
+type CreateUserBody struct {
 	Email    string `json:"email" validate:"required"`
 	Password string `json:"password" validate:"required"`
 	Name     string `json:"name" validate:"required"`
 }
 
 func (h handler) AddUser(ctx *gin.Context) {
-	body := UserBody{}
+	body := CreateUserBody{}
 
 	if err := ctx.BindJSON(&body); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
