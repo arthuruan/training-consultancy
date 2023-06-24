@@ -20,6 +20,7 @@ func RegisterRoutes(router *gin.Engine, client *mongo.Client) {
 
 	v1 := router.Group("/v1")
 
-	students := v1.Group("/exercises")
-	students.POST("/", middleware.RequireAuth, h.AddExercie)
+	exercises := v1.Group("/exercises")
+	exercises.POST("/", middleware.RequireAuth, h.AddExercie)
+	exercises.GET("/:id", middleware.RequireAuth, h.GetExerciseById)
 }
