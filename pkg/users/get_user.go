@@ -17,7 +17,7 @@ func (h handler) GetUser(ctx *gin.Context) {
 
 	if err := h.usersCollection.FindOne(ctx, bson.M{"_id": objId}).Decode(&user); err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{
-			"errorMessage": err.Error(),
+			"errorMessage": "User not found.",
 		})
 		return
 	}

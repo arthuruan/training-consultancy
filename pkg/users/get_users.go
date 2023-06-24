@@ -23,7 +23,7 @@ func (h handler) GetUsers(ctx *gin.Context) {
 	defer cursor.Close(ctx)
 	if err := cursor.All(ctx, &users); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
-			"errorMessage": err.Error(),
+			"errorMessage": "Failed to list users.",
 		})
 		return
 	}
