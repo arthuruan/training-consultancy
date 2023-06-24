@@ -15,7 +15,7 @@ Workout Consultancy API, that helps a personal trainer to create and manage your
 
 - [x] create student
 - [ ] get student
-- [ ] get students
+- [x] get students
 - [ ] update student
 - [x] delete student
 
