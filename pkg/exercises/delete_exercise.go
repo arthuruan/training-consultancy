@@ -28,6 +28,6 @@ func (h handler) DeleteExercise(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{
-		"message": "Student successfully deleted!",
+		"message": "Exercise successfully deleted!",
 	})
 }

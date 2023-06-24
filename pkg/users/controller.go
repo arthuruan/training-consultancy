@@ -26,4 +26,5 @@ func RegisterRoutes(router *gin.Engine, client *mongo.Client) {
 	users.GET("/", middleware.RequireAuth, h.GetUsers)
 	users.GET("/:id", middleware.RequireAuth, h.GetUser)
 	users.PUT("/:id", middleware.RequireAuth, h.UpdateUser)
+	users.DELETE("/:id", middleware.RequireAuth, h.DeleteUser)
 }
