@@ -10,13 +10,14 @@ Workout Consultancy API, that helps a personal trainer to create and manage your
 - [x] get users
 - [x] login
 - [x] update user
+- [ ] delete user
 
 ## students
 
 - [x] create student
 - [x] get student by id
 - [x] get students
-- [ ] update student
+- [x] update student
 - [x] delete student
 
 ## exercises
@@ -27,14 +28,6 @@ Workout Consultancy API, that helps a personal trainer to create and manage your
 - [ ] update exercise
 - [ ] delete exercise
 
-## workouts
-
-- [ ] create workout
-- [ ] get workout by id
-- [ ] get workouts
-- [ ] update workout
-- [ ] delete workout
-
 ## workout_sheets
 
 - [ ] create workout_sheet
@@ -42,3 +35,11 @@ Workout Consultancy API, that helps a personal trainer to create and manage your
 - [ ] get workout_sheets
 - [ ] update workout_sheet
 - [ ] delete workout_sheet
+
+## workouts
+
+- [ ] create workout
+- [ ] get workout by id
+- [ ] get workouts
+- [ ] update workout
+- [ ] delete workout
