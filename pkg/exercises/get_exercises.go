@@ -1,4 +1,4 @@
-package users
+package exercises
 
 import (
 	"net/http"
@@ -8,10 +8,10 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func (h handler) GetUsers(ctx *gin.Context) {
-	var users []models.User
+func (h handler) GetExercises(ctx *gin.Context) {
+	var exercises []models.Exercise
 
-	cursor, err := h.usersCollection.Find(ctx, bson.D{})
+	cursor, err := h.exercisesCollection.Find(ctx, bson.D{})
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
@@ -21,12 +21,12 @@ func (h handler) GetUsers(ctx *gin.Context) {
 	}
 
 	defer cursor.Close(ctx)
-	if err := cursor.All(ctx, &users); err != nil {
+	if err := cursor.All(ctx, &exercises); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
-			"errorMessage": "Failed to list users.",
+			"errorMessage": "Failed to list exercises.",
 		})
 		return
 	}
 
-	ctx.JSON(http.StatusOK, users)
+	ctx.JSON(http.StatusOK, exercises)
 }

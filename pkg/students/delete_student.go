@@ -1,7 +1,6 @@
 package students
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -20,8 +19,6 @@ func (h handler) DeleteStudent(ctx *gin.Context) {
 		})
 		return
 	}
-
-	fmt.Println(result)
 
 	if result.DeletedCount == 0 {
 		ctx.JSON(http.StatusNotFound, gin.H{
