@@ -1,4 +1,4 @@
-package exercises
+package workoutsheets
 
 import (
 	"net/http"
@@ -8,10 +8,10 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func (h handler) GetExercises(ctx *gin.Context) {
-	var exercises []models.Exercise
+func (h handler) GetWorkoutSheets(ctx *gin.Context) {
+	var workoutSheets []models.WorkoutSheet
 
-	cursor, err := h.exercisesCollection.Find(ctx, bson.D{})
+	cursor, err := h.workoutSheetsCollection.Find(ctx, bson.D{})
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"errorMessage": err.Error(),
@@ -20,12 +20,12 @@ func (h handler) GetExercises(ctx *gin.Context) {
 	}
 
 	defer cursor.Close(ctx)
-	if err := cursor.All(ctx, &exercises); err != nil {
+	if err := cursor.All(ctx, &workoutSheets); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
-			"errorMessage": "Failed to list exercises.",
+			"errorMessage": "Failed to list workout sheets.",
 		})
 		return
 	}
 
-	ctx.JSON(http.StatusOK, exercises)
+	ctx.JSON(http.StatusOK, workoutSheets)
 }

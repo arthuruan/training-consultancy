@@ -25,7 +25,7 @@ Workout Consultancy API, that helps a personal trainer to create and manage your
 
 - [x] create workout_sheet
 - [x] get workout_sheet by id
-- [ ] get workout_sheets
+- [x] get workout_sheets
 - [ ] update workout_sheet
 - [ ] delete workout_sheet
 

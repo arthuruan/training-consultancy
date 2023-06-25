@@ -13,10 +13,10 @@ func (h handler) GetUsers(ctx *gin.Context) {
 
 	filters := []primitive.E{}
 	if userType := ctx.Query("type"); userType != "" {
-		filters = append(filters, primitive.E{"type", userType})
+		filters = append(filters, primitive.E{Key: "type", Value: userType})
 	}
 	if personalId := ctx.Query("personalId"); personalId != "" {
-		filters = append(filters, primitive.E{"personalId", personalId})
+		filters = append(filters, primitive.E{Key: "personalId", Value: personalId})
 	}
 
 	cursor, err := h.usersCollection.Find(ctx, filters)

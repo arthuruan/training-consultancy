@@ -16,7 +16,7 @@ type CreateExerciseBody struct {
 	VideoURL string `json:"videoUrl" validate:"required"`
 }
 
-func (h handler) AddExercie(ctx *gin.Context) {
+func (h handler) CreateExercise(ctx *gin.Context) {
 	body := CreateExerciseBody{}
 
 	if err := ctx.BindJSON(&body); err != nil {

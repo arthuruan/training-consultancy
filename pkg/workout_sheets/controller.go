@@ -24,6 +24,7 @@ func RegisterRoutes(router *gin.Engine, client *mongo.Client) {
 	v1 := router.Group("/v1")
 
 	workoutSheets := v1.Group("/workout-sheets")
-	workoutSheets.POST("/", middleware.RequireAuth, h.AddWorkoutSheet)
+	workoutSheets.POST("/", middleware.RequireAuth, h.CreateWorkoutSheet)
+	workoutSheets.GET("/", middleware.RequireAuth, h.GetWorkoutSheets)
 	workoutSheets.GET("/:id", middleware.RequireAuth, h.GetWorkoutSheetById)
 }

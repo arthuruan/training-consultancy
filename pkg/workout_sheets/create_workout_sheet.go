@@ -19,7 +19,7 @@ type CreateWorkoutSheetBody struct {
 	Observation    string `json:"observation"`
 }
 
-func (h handler) AddWorkoutSheet(ctx *gin.Context) {
+func (h handler) CreateWorkoutSheet(ctx *gin.Context) {
 	body := CreateWorkoutSheetBody{}
 
 	if err := ctx.BindJSON(&body); err != nil {
