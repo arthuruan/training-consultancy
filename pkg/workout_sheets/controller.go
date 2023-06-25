@@ -28,4 +28,5 @@ func RegisterRoutes(router *gin.Engine, client *mongo.Client) {
 	workoutSheets.GET("/", middleware.RequireAuth, h.GetWorkoutSheets)
 	workoutSheets.GET("/:id", middleware.RequireAuth, h.GetWorkoutSheetById)
 	workoutSheets.PUT("/:id", middleware.RequireAuth, h.UpdateWorkoutSheet)
+	workoutSheets.DELETE("/:id", middleware.RequireAuth, h.DeleteWorkoutSheet)
 }

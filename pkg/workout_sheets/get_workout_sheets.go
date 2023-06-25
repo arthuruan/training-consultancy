@@ -5,13 +5,18 @@ import (
 
 	"github.com/arthuruan/training-consultancy/common/models"
 	"github.com/gin-gonic/gin"
-	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func (h handler) GetWorkoutSheets(ctx *gin.Context) {
 	var workoutSheets []models.WorkoutSheet
 
-	cursor, err := h.workoutSheetsCollection.Find(ctx, bson.D{})
+	filters := []primitive.E{}
+	if studentId := ctx.Query("studentId"); studentId != "" {
+		filters = append(filters, primitive.E{Key: "studentId", Value: studentId})
+	}
+
+	cursor, err := h.workoutSheetsCollection.Find(ctx, filters)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"errorMessage": err.Error(),
