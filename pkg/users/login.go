@@ -59,6 +59,7 @@ func (h handler) Login(ctx *gin.Context) {
 	// Generate a jwt token
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"sub": user.ID,
+		"typ": user.Type,
 		"exp": time.Now().Add(time.Hour * 24 * 30).Unix(),
 	})
 

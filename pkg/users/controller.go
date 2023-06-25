@@ -21,10 +21,11 @@ func RegisterRoutes(router *gin.Engine, client *mongo.Client) {
 	v1 := router.Group("/v1")
 
 	users := v1.Group("/users")
-	users.POST("/", h.AddUser)
+	users.POST("/personal", h.CreatePersonal)
+	users.POST("/student", h.CreateStudent)
 	users.POST("/login", h.Login)
 	users.GET("/", middleware.RequireAuth, h.GetUsers)
-	users.GET("/:id", middleware.RequireAuth, h.GetUser)
+	users.GET("/:id", middleware.RequireAuth, h.GetUserById)
 	users.PUT("/:id", middleware.RequireAuth, h.UpdateUser)
 	users.DELETE("/:id", middleware.RequireAuth, h.DeleteUser)
 }

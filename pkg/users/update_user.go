@@ -12,7 +12,14 @@ import (
 )
 
 type UpdateUserBody struct {
-	Name string `json:"name" validate:"required"`
+	Name          string `json:"name" validate:"required"`
+	Birthday      string `json:"birthday" validate:"required"`
+	Objective     string `json:"objective" validate:"required"`
+	Gender        string `json:"gender" validate:"required"`
+	Phone         string `json:"phone" validate:"required"`
+	PlanType      string `json:"planType" validate:"required"`
+	Frequence     string `json:"frequence" validate:"required"`
+	TrainingPlace string `json:"trainingPlace" validate:"required"`
 }
 
 func (h handler) UpdateUser(ctx *gin.Context) {
@@ -37,8 +44,26 @@ func (h handler) UpdateUser(ctx *gin.Context) {
 		return
 	}
 
+	birthday, err := time.Parse(time.RFC3339, body.Birthday)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"errorMessage": "Invalid birthday format, you should use ISO 8601 format.",
+		})
+		return
+	}
+
 	// Update user
-	update := bson.M{"name": body.Name, "updatedAt": time.Now()}
+	update := bson.M{
+		"name":          body.Name,
+		"birthday":      birthday,
+		"objective":     body.Objective,
+		"gender":        body.Gender,
+		"phone":         body.Phone,
+		"planType":      body.PlanType,
+		"frequence":     body.Frequence,
+		"trainingPlace": body.TrainingPlace,
+		"updatedAt":     time.Now(),
+	}
 	result, err := h.usersCollection.UpdateOne(ctx, bson.M{"_id": objId}, bson.M{"$set": update})
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{

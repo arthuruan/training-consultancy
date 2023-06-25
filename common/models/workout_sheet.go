@@ -7,13 +7,13 @@ import (
 )
 
 type WorkoutSheet struct {
-	ID             primitive.ObjectID `bson:"_id,omitempty" json:"id"`
-	StudentID      string             `bson:"studentId" json:"studentId"`
-	ProfessorID    string             `bson:"professorId" json:"professorId"`
-	Type           string             `bson:"type" json:"type"`
-	StartTimestamp time.Time          `bson:"startTimestamp" json:"startTimestamp"`
-	EndTimestamp   time.Time          `bson:"endTimestamp" json:"endTimestamp"`
-	Observation    string             `bson:"observation" json:"observation"`
-	CreatedAt      time.Time          `bson:"createdAt" json:"createdAt"`
-	UpdatedAt      time.Time          `bson:"updatedAt" json:"updatedAt"`
+	ID             primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
+	StudentID      string             `bson:"studentId,omitempty" json:"studentId,omitempty"`
+	PersonalID     string             `bson:"personalId,omitempty" json:"personalId,omitempty"`
+	Type           string             `bson:"type,omitempty" json:"type,omitempty"`
+	StartTimestamp time.Time          `bson:"startTimestamp,omitempty" json:"startTimestamp,omitempty"`
+	EndTimestamp   time.Time          `bson:"endTimestamp,omitempty" json:"endTimestamp,omitempty"`
+	Observation    string             `bson:"observation,omitempty" json:"observation,omitempty"`
+	CreatedAt      time.Time          `bson:"createdAt,omitempty" json:"createdAt,omitempty"`
+	UpdatedAt      time.Time          `bson:"updatedAt,omitempty" json:"updatedAt,omitempty"`
 }

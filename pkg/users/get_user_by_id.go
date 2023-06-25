@@ -9,7 +9,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func (h handler) GetUser(ctx *gin.Context) {
+func (h handler) GetUserById(ctx *gin.Context) {
 	id := ctx.Param("id")
 	objId, _ := primitive.ObjectIDFromHex(id)
 

@@ -5,13 +5,21 @@ import (
 
 	"github.com/arthuruan/training-consultancy/common/models"
 	"github.com/gin-gonic/gin"
-	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func (h handler) GetUsers(ctx *gin.Context) {
 	var users []models.User
 
-	cursor, err := h.usersCollection.Find(ctx, bson.D{})
+	filters := []primitive.E{}
+	if userType := ctx.Query("type"); userType != "" {
+		filters = append(filters, primitive.E{"type", userType})
+	}
+	if personalId := ctx.Query("personalId"); personalId != "" {
+		filters = append(filters, primitive.E{"personalId", personalId})
+	}
+
+	cursor, err := h.usersCollection.Find(ctx, filters)
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{

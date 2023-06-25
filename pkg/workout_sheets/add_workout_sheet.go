@@ -41,9 +41,9 @@ func (h handler) AddWorkoutSheet(ctx *gin.Context) {
 	// Validate StudentID
 	var student models.Student
 	studentId, _ := primitive.ObjectIDFromHex(body.StudentID)
-	if err := h.studentsCollection.FindOne(ctx, bson.M{"_id": studentId}).Decode(&student); err != nil {
+	if err := h.usersCollection.FindOne(ctx, bson.M{"_id": studentId, "type": models.UserType.Student}).Decode(&student); err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{
-			"errorMessage": "The studentId was not found.",
+			"errorMessage": "StudentId was not found.",
 		})
 		return
 	}
@@ -67,7 +67,7 @@ func (h handler) AddWorkoutSheet(ctx *gin.Context) {
 	// Create Student
 	workoutSheet := models.WorkoutSheet{
 		ID:             primitive.NewObjectID(),
-		ProfessorID:    student.ProfessorID,
+		PersonalID:     student.PersonalID,
 		StudentID:      body.StudentID,
 		Type:           body.Type,
 		StartTimestamp: startTimestamp,

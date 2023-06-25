@@ -1,4 +1,4 @@
-package students
+package users
 
 import (
 	"net/http"
@@ -14,19 +14,19 @@ import (
 )
 
 type CreateStudentBody struct {
-	ProfessorID   string `json:"professorId" validate:"required"`
+	PersonalID    string `json:"personalId" validate:"required"`
 	PlanType      string `json:"planType" validate:"required"`
 	Name          string `json:"name" validate:"required"`
 	Email         string `json:"email" validate:"required"`
 	Phone         string `json:"phone" validate:"required"`
-	BirthDate     string `json:"birthDate" validate:"required"`
+	Birthday      string `json:"birthday" validate:"required"`
 	Gender        string `json:"gender" validate:"required"`
 	Objective     string `json:"objective" validate:"required"`
 	Frequence     string `json:"frequence" validate:"required"`
 	TrainingPlace string `json:"trainingPlace" validate:"required"`
 }
 
-func (h handler) AddStudent(ctx *gin.Context) {
+func (h handler) CreateStudent(ctx *gin.Context) {
 	body := CreateStudentBody{}
 
 	if err := ctx.BindJSON(&body); err != nil {
@@ -45,18 +45,8 @@ func (h handler) AddStudent(ctx *gin.Context) {
 		return
 	}
 
-	// Validate ProfessorID
-	var professor models.User
-	professorId, _ := primitive.ObjectIDFromHex(body.ProfessorID)
-	if err := h.usersCollection.FindOne(ctx, bson.M{"_id": professorId, "type": models.UserType.Professor}).Decode(&professor); err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{
-			"errorMessage": "The professorId was not found.",
-		})
-		return
-	}
-
 	// Create a unique index on the email field
-	if _, err := h.studentsCollection.Indexes().CreateOne(
+	if _, err := h.usersCollection.Indexes().CreateOne(
 		ctx,
 		mongo.IndexModel{
 			Keys:    bson.D{{Key: "email", Value: 1}},
@@ -64,37 +54,47 @@ func (h handler) AddStudent(ctx *gin.Context) {
 		},
 	); err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"errorMessage": "Email is already registered.",
+			"errorMessage": err.Error(),
 		})
 		return
 	}
 
-	birthDate, err := time.Parse(time.RFC3339, body.BirthDate)
+	birthday, err := time.Parse(time.RFC3339, body.Birthday)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
-			"errorMessage": "Invalid birthDate format, you should use ISO 8601 format.",
+			"errorMessage": "Invalid birthday format, you should use ISO 8601 format.",
 		})
 		return
 	}
 
-	// Create Student
+	// Validate PersonalID
+	var personal models.User
+	personalId, _ := primitive.ObjectIDFromHex(body.PersonalID)
+	if err := h.usersCollection.FindOne(ctx, bson.M{"_id": personalId, "type": models.UserType.Personal}).Decode(&personal); err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{
+			"errorMessage": "PersonalId was not found.",
+		})
+		return
+	}
+
+	// Insert in the database
 	student := models.Student{
 		ID:            primitive.NewObjectID(),
-		ProfessorID:   body.ProfessorID,
 		Name:          body.Name,
 		Email:         body.Email,
-		Phone:         body.Phone,
-		BirthDate:     birthDate,
+		Type:          models.UserType.Student,
+		PersonalID:    body.PersonalID,
+		Birthday:      birthday,
 		Objective:     body.Objective,
 		Gender:        body.Gender,
+		Phone:         body.Phone,
 		PlanType:      body.PlanType,
 		Frequence:     body.Frequence,
 		TrainingPlace: body.TrainingPlace,
 		CreatedAt:     time.Now(),
 		UpdatedAt:     time.Now(),
 	}
-
-	if _, err := h.studentsCollection.InsertOne(ctx, student); err != nil {
+	if _, err := h.usersCollection.InsertOne(ctx, student); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"errorMessage": "Failed to register the student.",
 		})

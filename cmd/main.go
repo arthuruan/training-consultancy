@@ -4,7 +4,6 @@ import (
 	"github.com/arthuruan/training-consultancy/common/configs"
 	"github.com/arthuruan/training-consultancy/common/db"
 	"github.com/arthuruan/training-consultancy/pkg/exercises"
-	"github.com/arthuruan/training-consultancy/pkg/students"
 	"github.com/arthuruan/training-consultancy/pkg/users"
 	workoutsheets "github.com/arthuruan/training-consultancy/pkg/workout_sheets"
 	"github.com/arthuruan/training-consultancy/pkg/workouts"
@@ -21,7 +20,6 @@ func main() {
 
 	// routes
 	users.RegisterRoutes(app, dbClient)
-	students.RegisterRoutes(app, dbClient)
 	workoutsheets.RegisterRoutes(app, dbClient)
 	exercises.RegisterRoutes(app, dbClient)
 	workouts.RegisterRoutes(app, dbClient)

@@ -7,10 +7,10 @@ import (
 )
 
 type Exercise struct {
-	ID        primitive.ObjectID `bson:"_id,omitempty" json:"id"`
-	Name      string             `bson:"name" json:"name"`
-	Category  string             `bson:"category" json:"category"`
-	VideoURL  string             `bson:"videoUrl" json:"videoUrl"`
-	CreatedAt time.Time          `bson:"createdAt" json:"createdAt"`
-	UpdatedAt time.Time          `bson:"updatedAt" json:"updatedAt"`
+	ID        primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
+	Name      string             `bson:"name,omitempty" json:"name,omitempty"`
+	Category  string             `bson:"category,omitempty" json:"category,omitempty"`
+	VideoURL  string             `bson:"videoUrl,omitempty" json:"videoUrl,omitempty"`
+	CreatedAt time.Time          `bson:"createdAt,omitempty" json:"createdAt,omitempty"`
+	UpdatedAt time.Time          `bson:"updatedAt,omitempty" json:"updatedAt,omitempty"`
 }

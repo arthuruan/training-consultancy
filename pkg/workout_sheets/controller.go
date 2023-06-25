@@ -9,21 +9,21 @@ import (
 
 type handler struct {
 	workoutSheetsCollection *mongo.Collection
-	studentsCollection      *mongo.Collection
+	usersCollection         *mongo.Collection
 }
 
 func RegisterRoutes(router *gin.Engine, client *mongo.Client) {
 	workoutSheetsCollection := db.GetCollection(client, "workout_sheets")
-	studentsCollection := db.GetCollection(client, "students")
+	usersCollection := db.GetCollection(client, "users")
 
 	h := &handler{
 		workoutSheetsCollection,
-		studentsCollection,
+		usersCollection,
 	}
 
 	v1 := router.Group("/v1")
 
-	students := v1.Group("/workout-sheets")
-	students.POST("/", middleware.RequireAuth, h.AddWorkoutSheet)
-	students.GET("/:id", middleware.RequireAuth, h.GetWorkoutSheetById)
+	workoutSheets := v1.Group("/workout-sheets")
+	workoutSheets.POST("/", middleware.RequireAuth, h.AddWorkoutSheet)
+	workoutSheets.GET("/:id", middleware.RequireAuth, h.GetWorkoutSheetById)
 }

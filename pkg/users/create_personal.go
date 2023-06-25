@@ -15,14 +15,17 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-type CreateUserBody struct {
+type CreatePersonalBody struct {
 	Email    string `json:"email" validate:"required"`
 	Password string `json:"password" validate:"required"`
 	Name     string `json:"name" validate:"required"`
+	Phone    string `json:"phone" validate:"required"`
+	Birthday string `json:"birthday" validate:"required"`
+	Gender   string `json:"gender" validate:"required"`
 }
 
-func (h handler) AddUser(ctx *gin.Context) {
-	body := CreateUserBody{}
+func (h handler) CreatePersonal(ctx *gin.Context) {
+	body := CreatePersonalBody{}
 
 	if err := ctx.BindJSON(&body); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
@@ -54,37 +57,42 @@ func (h handler) AddUser(ctx *gin.Context) {
 		return
 	}
 
+	birthday, err := time.Parse(time.RFC3339, body.Birthday)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"errorMessage": "Invalid birthday format, you should use ISO 8601 format.",
+		})
+		return
+	}
+
 	// Hash the password
 	hash, err := bcrypt.GenerateFromPassword([]byte(body.Password), 10)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"errorMessage": "Failed to hash password",
 		})
+		return
 	}
 
 	// Insert in the database
-	user := models.User{
+	personal := models.Personal{
 		ID:        primitive.NewObjectID(),
 		Name:      body.Name,
 		Email:     body.Email,
+		Birthday:  birthday,
+		Gender:    body.Gender,
+		Phone:     body.Phone,
 		Password:  string(hash),
-		Type:      models.UserType.Professor,
+		Type:      models.UserType.Personal,
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}
-	if _, err := h.usersCollection.InsertOne(ctx, user); err != nil {
+	if _, err := h.usersCollection.InsertOne(ctx, personal); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
-			"errorMessage": err.Error(),
+			"errorMessage": "Failed to register the personal.",
 		})
 		return
 	}
 
-	ctx.JSON(http.StatusCreated, gin.H{
-		"id":        user.ID,
-		"name":      user.Name,
-		"email":     user.Email,
-		"type":      user.Type,
-		"createdAt": user.CreatedAt,
-		"updatedAt": user.UpdatedAt,
-	})
+	ctx.JSON(http.StatusCreated, personal)
 }

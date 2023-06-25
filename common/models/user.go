@@ -7,19 +7,57 @@ import (
 )
 
 var UserType = struct {
-	Professor string
-	Student   string
+	Personal string
+	Student  string
 }{
-	Professor: "professor",
-	Student:   "student",
+	Personal: "personal",
+	Student:  "student",
 }
 
 type User struct {
-	ID        primitive.ObjectID `bson:"_id,omitempty" json:"id"`
-	Email     string             `bson:"email,omitempty" json:"email"`
-	Password  string             `bson:"password,omitempty" json:"password"`
-	Type      string             `bson:"type,omitempty" json:"type"`
-	Name      string             `bson:"name,omitempty" json:"name"`
-	CreatedAt time.Time          `bson:"createdAt,omitempty" json:"createdAt"`
-	UpdatedAt time.Time          `bson:"updatedAt,omitempty" json:"updatedAt"`
+	ID            primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
+	Email         string             `bson:"email,omitempty" json:"email,omitempty"`
+	Password      string             `bson:"password,omitempty" json:"-"`
+	Type          string             `bson:"type,omitempty" json:"type,omitempty"`
+	Name          string             `bson:"name,omitempty" json:"name,omitempty"`
+	PersonalID    string             `bson:"personalId,omitempty" json:"personalId,omitempty"`
+	Birthday      time.Time          `bson:"birthday,omitempty" json:"birthday,omitempty"`
+	Objective     string             `bson:"objective,omitempty" json:"objective,omitempty"`
+	Gender        string             `bson:"gender,omitempty" json:"gender,omitempty"`
+	Phone         string             `bson:"phone,omitempty" json:"phone,omitempty"`
+	PlanType      string             `bson:"planType,omitempty" json:"planType,omitempty"`
+	Frequence     string             `bson:"frequence,omitempty" json:"frequence,omitempty"`
+	TrainingPlace string             `bson:"trainingPlace,omitempty" json:"trainingPlace,omitempty"`
+	CreatedAt     time.Time          `bson:"createdAt,omitempty" json:"createdAt,omitempty"`
+	UpdatedAt     time.Time          `bson:"updatedAt,omitempty" json:"updatedAt,omitempty"`
+}
+
+type Student struct {
+	ID            primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
+	Email         string             `bson:"email,omitempty" json:"email,omitempty"`
+	Type          string             `bson:"type,omitempty" json:"type,omitempty"`
+	Name          string             `bson:"name,omitempty" json:"name,omitempty"`
+	PersonalID    string             `bson:"personalId,omitempty" json:"personalId,omitempty"`
+	Birthday      time.Time          `bson:"birthday,omitempty" json:"birthday,omitempty"`
+	Objective     string             `bson:"objective,omitempty" json:"objective,omitempty"`
+	Gender        string             `bson:"gender,omitempty" json:"gender,omitempty"`
+	Phone         string             `bson:"phone,omitempty" json:"phone,omitempty"`
+	PlanType      string             `bson:"planType,omitempty" json:"planType,omitempty"`
+	Frequence     string             `bson:"frequence,omitempty" json:"frequence,omitempty"`
+	TrainingPlace string             `bson:"trainingPlace,omitempty" json:"trainingPlace,omitempty"`
+	CreatedAt     time.Time          `bson:"createdAt,omitempty" json:"createdAt,omitempty"`
+	UpdatedAt     time.Time          `bson:"updatedAt,omitempty" json:"updatedAt,omitempty"`
+}
+
+type Personal struct {
+	ID        primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
+	Email     string             `bson:"email,omitempty" json:"email,omitempty"`
+	Password  string             `bson:"password,omitempty" json:"-"`
+	Type      string             `bson:"type,omitempty" json:"type,omitempty"`
+	Name      string             `bson:"name,omitempty" json:"name,omitempty"`
+	Birthday  time.Time          `bson:"birthday,omitempty" json:"birthday,omitempty"`
+	Gender    string             `bson:"gender,omitempty" json:"gender,omitempty"`
+	Phone     string             `bson:"phone,omitempty" json:"phone,omitempty"`
+	CreatedAt time.Time          `bson:"createdAt,omitempty" json:"createdAt,omitempty"`
+	UpdatedAt time.Time          `bson:"updatedAt,omitempty" json:"updatedAt,omitempty"`
 }
