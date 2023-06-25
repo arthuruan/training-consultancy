@@ -64,6 +64,13 @@ func (h handler) CreateWorkoutSheet(ctx *gin.Context) {
 		return
 	}
 
+	if endTimestamp.Unix() < startTimestamp.Unix() {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"errorMessage": "End timestamp should be gratter than start timestamp.",
+		})
+		return
+	}
+
 	// Create Student
 	workoutSheet := models.WorkoutSheet{
 		ID:             primitive.NewObjectID(),
