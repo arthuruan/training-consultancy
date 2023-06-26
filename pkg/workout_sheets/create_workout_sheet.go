@@ -12,25 +12,12 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-type WorkoutBody struct {
-	ExerciseID    string `json:"exerciseId" validate:"required"`
-	Type          string `json:"type" validate:"required"`
-	SequenceIndex int64  `json:"sequenceIndex" validate:"required"`
-	Series        int64  `json:"series" validate:"required"`
-	Repetition    string `json:"repetition" validate:"required"`
-	Duration      int64  `json:"duration"`
-	Rest          int64  `json:"rest" validate:"required"`
-	Load          string `json:"load" validate:"required"`
-	Method        string `json:"method" validate:"required"`
-}
-
 type CreateWorkoutSheetBody struct {
-	StudentID      string        `json:"studentId" validate:"required"`
-	Type           string        `json:"type" validate:"required"`
-	StartTimestamp string        `json:"startTimestamp" validate:"required"`
-	EndTimestamp   string        `json:"endTimestamp" validate:"required"`
-	Observation    string        `json:"observation"`
-	Workouts       []WorkoutBody `json:"workouts" validate:"required"`
+	StudentID      string `json:"studentId" validate:"required"`
+	Type           string `json:"type" validate:"required"`
+	StartTimestamp string `json:"startTimestamp" validate:"required"`
+	EndTimestamp   string `json:"endTimestamp" validate:"required"`
+	Observation    string `json:"observation"`
 }
 
 func (h handler) CreateWorkoutSheet(ctx *gin.Context) {
@@ -90,68 +77,13 @@ func (h handler) CreateWorkoutSheet(ctx *gin.Context) {
 	workoutSheet := models.WorkoutSheet{
 		ID:             primitive.NewObjectID(),
 		PersonalID:     student.PersonalID,
-		StudentID:      body.StudentID,
+		StudentID:      studentId,
 		Type:           body.Type,
 		StartTimestamp: startTimestamp,
 		EndTimestamp:   endTimestamp,
 		Observation:    body.Observation,
 		CreatedAt:      time.Now(),
 		UpdatedAt:      time.Now(),
-	}
-
-	var workouts []models.Workout
-	var documents []interface{}
-	for _, item := range body.Workouts {
-		// Validate workout body
-		if err := validate.Struct(&item); err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{
-				"errorMessage": err.Error(),
-			})
-			return
-		}
-		// Validate ExerciseID
-		var exercise models.Exercise
-		exerciseId, _ := primitive.ObjectIDFromHex(item.ExerciseID)
-		if err := h.exercisesCollection.FindOne(ctx, bson.M{"_id": exerciseId}).Decode(&exercise); err != nil {
-			ctx.JSON(http.StatusNotFound, gin.H{
-				"errorMessage": "ExerciseId was not found.",
-			})
-			return
-		}
-
-		workout := models.Workout{
-			ID:             primitive.NewObjectID(),
-			WorkoutSheetID: workoutSheet.ID.String(),
-			ExerciseID:     item.ExerciseID,
-			Type:           item.Type,
-			SequenceIndex:  item.SequenceIndex,
-			Series:         item.Series,
-			Repetition:     item.Repetition,
-			Duration:       item.Duration,
-			Rest:           item.Rest,
-			Load:           item.Load,
-			Method:         item.Method,
-			CreatedAt:      time.Now(),
-			UpdatedAt:      time.Now(),
-		}
-		workouts = append(workouts, workout)
-
-		document := bson.D{
-			{Key: "id", Value: workout.ID},
-			{Key: "workoutSheetId", Value: workout.WorkoutSheetID},
-			{Key: "exerciseID", Value: workout.ExerciseID},
-			{Key: "type", Value: workout.Type},
-			{Key: "sequenceIndex", Value: workout.SequenceIndex},
-			{Key: "series", Value: workout.Series},
-			{Key: "repetition", Value: workout.Repetition},
-			{Key: "duration", Value: workout.Duration},
-			{Key: "rest", Value: workout.Rest},
-			{Key: "load", Value: workout.Load},
-			{Key: "method", Value: workout.Method},
-			{Key: "createdAt", Value: workout.CreatedAt},
-			{Key: "updatedAt", Value: workout.UpdatedAt},
-		}
-		documents = append(documents, document)
 	}
 
 	if _, err := h.workoutSheetsCollection.InsertOne(ctx, workoutSheet); err != nil {
@@ -161,26 +93,5 @@ func (h handler) CreateWorkoutSheet(ctx *gin.Context) {
 		return
 	}
 
-	if _, err := h.workoutsCollection.InsertMany(ctx, documents); err != nil {
-		h.workoutSheetsCollection.DeleteOne(ctx, bson.M{"_id": workoutSheet.ID})
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"errorMessage": "Failed to register the workouts.",
-		})
-		return
-	}
-
-	response := models.WorkoutSheetResponse{
-		ID:             primitive.NewObjectID(),
-		PersonalID:     student.PersonalID,
-		StudentID:      body.StudentID,
-		Type:           body.Type,
-		StartTimestamp: startTimestamp,
-		EndTimestamp:   endTimestamp,
-		Observation:    body.Observation,
-		CreatedAt:      time.Now(),
-		UpdatedAt:      time.Now(),
-		Workouts:       workouts,
-	}
-
-	ctx.JSON(http.StatusCreated, response)
+	ctx.JSON(http.StatusCreated, workoutSheet)
 }

@@ -37,7 +37,7 @@ type Student struct {
 	Email         string             `bson:"email,omitempty" json:"email,omitempty"`
 	Type          string             `bson:"type,omitempty" json:"type,omitempty"`
 	Name          string             `bson:"name,omitempty" json:"name,omitempty"`
-	PersonalID    string             `bson:"personalId,omitempty" json:"personalId,omitempty"`
+	PersonalID    primitive.ObjectID `bson:"personalId,omitempty" json:"personalId,omitempty"`
 	Birthday      time.Time          `bson:"birthday,omitempty" json:"birthday,omitempty"`
 	Objective     string             `bson:"objective,omitempty" json:"objective,omitempty"`
 	Gender        string             `bson:"gender,omitempty" json:"gender,omitempty"`

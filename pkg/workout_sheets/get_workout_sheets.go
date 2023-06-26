@@ -13,7 +13,8 @@ func (h handler) GetWorkoutSheets(ctx *gin.Context) {
 
 	filters := []primitive.E{}
 	if studentId := ctx.Query("studentId"); studentId != "" {
-		filters = append(filters, primitive.E{Key: "studentId", Value: studentId})
+		objId, _ := primitive.ObjectIDFromHex(studentId)
+		filters = append(filters, primitive.E{Key: "studentId", Value: objId})
 	}
 
 	cursor, err := h.workoutSheetsCollection.Find(ctx, filters)

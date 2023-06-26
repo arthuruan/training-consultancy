@@ -83,7 +83,7 @@ func (h handler) CreateStudent(ctx *gin.Context) {
 		Name:          body.Name,
 		Email:         body.Email,
 		Type:          models.UserType.Student,
-		PersonalID:    body.PersonalID,
+		PersonalID:    personalId,
 		Birthday:      birthday,
 		Objective:     body.Objective,
 		Gender:        body.Gender,
